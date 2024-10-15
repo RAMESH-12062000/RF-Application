@@ -1,0 +1,247 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns="sap.m"
+>
+    <Dialog
+        id="idconnectsapdialogbox"
+        resizable="true"
+        draggable="true"
+        contentWidth="30%"
+        class="boxContainer"
+        initialFocus="idDescriptionInput"
+    >
+        <customHeader >
+            <Bar id="_IDBar1coonectsap" class="TitlecustomHeader">
+                <contentMiddle>
+                    <!-- Logo -->
+                    <Image
+                        id="_IDGenImage"
+                        src="https://artihcus.com/assets/img/AG-logo.png"
+                        width="65px"
+                        height="25px"
+                        class="sapUiSmallMarginEnd"
+                    />
+                    <!-- Title -->
+                    <Title
+                        id="_IDTitleconnectsap"
+                        text="CAPmodel RF"
+
+                        class="capModelRFTextdialog"
+                    />
+                </contentMiddle>
+            </Bar>
+        </customHeader>
+        <content>
+                    <VBox class="titleContainer"> <!-- Add VBox to wrap the title with border -->
+                <HBox class="titleHeaderBox">
+                    <Title
+                        id="idSimpleFormTitle"
+                        text="System Connection Parameters"
+                        level="H2"
+                        class="customHeader_SSC titleWithBorder" 
+                    />
+                </HBox>
+            </VBox>
+            <form:SimpleForm
+                id="idconnecttosapDetailsForm"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="4"
+                labelSpanL="4"
+                labelSpanM="4"
+                labelSpanS="12"
+                emptySpanXL="1"
+                emptySpanL="1"
+                emptySpanM="1"
+                emptySpanS="0"
+                columnsXL="2"
+                columnsL="2"
+                columnsM="1"
+            >
+
+                <!-- <Title
+                    id="idSimpleFormTitle"
+                    text="System Connection Parameters"
+                    level="H2"
+                    class="sapUiSmallMarginBottom"
+                /> -->
+                <!-- Description -->
+                <HBox id="hboxDescription">
+                    <Label
+                        id="idLableDescription"
+                        text="Description:"
+                        width="120px"
+                        class="sapUiTinyMarginTop"
+                    />
+                    <Input
+                        id="idDescriptionInput"
+                        value="{}"
+                        placeholder="Enter Description..."
+                        class="customInput"
+                        width="100%"
+                        
+                    />
+                </HBox>
+ 
+                <!-- System Id -->
+                <HBox id="hboxSystemId">
+                    <Label
+                        id="idLableSystemId"
+                        text="System Id:"
+                        width="120px"
+                        class="sapUiTinyMarginTop"
+                    />
+                    <Input
+                        id="idSystemIdInput"
+                        value="{}"
+                        placeholder="ID"
+                        maxLength="3"
+                        width="50px"
+                        liveChange="ongetSAPPress"
+                    />
+                </HBox>
+ 
+                <!-- Instance Number -->
+                <HBox id="hboxInstanceNumber">
+                    <Label
+                        id="idLableInstanceNumber"
+                        text="Instance Number:"
+                        width="120px"
+                        class="sapUiTinyMarginTop"
+                    />
+                    <Input
+                        id="idInstanceNumberInput"
+                        value="{}"
+                        placeholder="Num"
+                        maxLength="3"
+                        width="50px"
+                    />
+                </HBox>
+                <!-- Client -->
+                <HBox id="hboxClient">
+                    <Label
+                        id="idLableClient"
+                        text="Client:"
+                        width="120px"
+                        class="sapUiTinyMarginTop"
+                    />
+                    <Input
+                        id="idClientInput"
+                        value="{}"
+                        placeholder="Client"
+                        maxLength="3"
+                        width="50px"
+                    />
+                </HBox>
+ 
+                <!-- Application server -->
+                <HBox id="hboxApplicationServer">
+                    <Label
+                        id="idLableApplicationServer"
+                        text="Application server:"
+                        width="120px"
+                        class="sapUiTinyMarginTop"
+                    />
+                    <Input
+                        id="idApplicationServerInput"
+                        value="{}"
+                        placeholder="Enter Application server..."
+                        class="customInput"
+                        width="100%"
+                        maxLength="200"
+                    />
+                </HBox>
+                <HBox id="hboxRouterString">
+                    <Label
+                        id="idLableRouterString"
+                        text="SAP Router String:"
+                        width="120px"
+                        class="sapUiTinyMarginTop"
+                    />
+                    <Input
+                        id="idRouterStringInput"
+                        value="{}"
+                        placeholder="Enter Router String..."
+                        class="customInput"
+                        width="100%"
+                    />
+                </HBox>
+                <!-- Service -->
+                <HBox id="hboxService">
+                    <Label
+                        id="idLableService"
+                        text="SAP Service:"
+                        width="120px"
+                        class="sapUiTinyMarginTop"
+                    />
+                    <Input
+                        id="idServiceInput"
+                        value="{}"
+                        placeholder="Enter Service..."
+                        class="customInput"
+                        width="100%"
+                    />
+                </HBox>
+
+                <!-- Checkboxes for Description, System ID, and Client -->
+                <HBox
+                    id="hboxCheckboxes"
+                    class='sapUiSmallMarginTop Checkbox'
+                >
+                    <CheckBox
+                        id='idCheckboxDescription'
+                        text='Description as System ID/Client'
+                        class="checkBoxText"
+                    />
+                </HBox>
+            </form:SimpleForm>
+        </content>
+        <HBox
+            id="_IDgenhboxcontainer"
+            justifyContent="Center"
+            class="buttonContainer"
+            width="85%"
+        >
+            <!-- Centering buttons -->
+            <Button
+                id="idconnectsapcancelButton"
+                text="Clear"
+                press="onClearconnectSAPPress"
+                type="Unstyled"
+                class="dialogButton sapUiTinyMarginEnd"
+
+            />
+            <Button
+                id="idconnectsapeditButton"
+                text="Edit"
+                press="onEditconnectSAPPress"
+                type="Unstyled"
+                visible="false"
+                class="dialogButton sapUiTinyMarginEnd"
+            />
+            <Button
+                id="idconnectsapbackButton"
+                text="Cancel"
+                type="Unstyled"
+                press="onBackconnectSAPPress"
+                class="dialogButton sapUiTinyMarginEnd"
+            />
+            <Button
+                id="idconnectsapfinishButton"
+                text="Finish"
+                type="Unstyled"
+                press="onFinishconnectSAPPress"
+                class="dialogButton sapUiTinyMarginEnd"
+            />
+            <Button
+                id="idhelpconnectsapButton"
+                text="Help"
+                type="Unstyled"
+                press="onHelpconnectsapDialog"
+                class="dialogButton"
+            />
+        </HBox>
+    </Dialog>
+</core:FragmentDefinition>
+
