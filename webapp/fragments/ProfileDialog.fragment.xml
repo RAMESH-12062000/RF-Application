@@ -36,11 +36,11 @@
                     >
                         <Text
                             id="idProfileName"
-                            text="Name"
+                            text="{profile>/Name}"
                         />
                         <Link
                             id="idProfileNumber"
-                            text="1234567890"
+                            text="{profile>/Number}"
                         />
                     </VBox>
                 </HBox>
@@ -54,7 +54,7 @@
                         icon="sap-icon://person-placeholder"
                         text="Account Details"
                         type="Transparent"
-                        press="onProfilePressed"
+                        press="onPressAccountDetails"
                     />
                     <Button
                         id="idEditButton"
@@ -68,7 +68,7 @@
                         icon="sap-icon://settings"
                         text="Default Settings"
                         type="Transparent"
-                        press="onResetDefaultPress"
+                        press="onResetToDefaultPress"
                     />
                     <Button
                         id="idThemesButton"
