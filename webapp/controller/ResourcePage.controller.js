@@ -327,6 +327,7 @@ sap.ui.define([
                     sap.m.MessageToast.show("Please exit Theme mode before selecting a theme.");
                     return;
                 }
+                this.resetDialogBox();
                 this.byId("idthemeTileDialogResource").open();
             },
             //Tile selcect btn from Profile Popover...
@@ -364,13 +365,14 @@ sap.ui.define([
                 var selectedTiles = this._selectedTiles || [];
                 // Check if any tiles are selected
                 if (selectedTiles.length === 0) {
-                    sap.m.MessageToast.show("Please select at least one tile to apply a color.");
+                    sap.m.MessageToast.show("Please select at least one tile to apply the theme.");
                     return;
                 }
                 // Extract only the IDs from the selected tiles
                 this._selectedTileIds = selectedTiles.map(function (tile) {
                     return tile.getId();
                 });
+                this.resetDialogBox();
                 this.byId("idthemeTileDialogResource").open();
             },
             //Exit from Theme Mode...
@@ -632,6 +634,7 @@ sap.ui.define([
                     oTile.removeStyleClass("tileSelected");
                 });
                 this._selectedTiles = [];
+                this.resetDialogBox();
             },
             applyBackgroundTheme: function (sColor, sImageSrc) {
                 var oMainContainer = this.byId("idScrollContainer1");
@@ -691,19 +694,61 @@ sap.ui.define([
                 if (aFiles.length > 0) {
                     var oFile = aFiles[0];
                     var reader = new FileReader();
-
+            
                     reader.onload = function (e) {
+                        // Save the uploaded image source as base64 string
                         this._uploadedImageSrc = e.target.result;
+            
+                        // Hide color picker and color options after an image is selected
                         this.byId("idcolorPickerResource").setVisible(false);
                         this.byId("colorOptionsResource").setVisible(false);
+                        MessageToast.show("Image selected. Now press 'Apply' to save!");
                     }.bind(this);
+            
                     reader.readAsDataURL(oFile);
                 } else {
                     this.byId("idcolorPickerResource").setVisible(true);
                     this.byId("colorOptionsResource").setVisible(true);
+                    MessageToast.show("No image selected. Please choose an image.");
                 }
-                MessageToast.show("Image selected. now press on Apply!")
-            },
+            }, 
+            // onFileUploadChange: function (oEvent) {
+            //     var aFiles = oEvent.getParameter("files");
+            //     if (aFiles.length > 0) {
+            //         var oFile = aFiles[0];
+            
+            //         // Validate file type based on mime type
+            //         var validTypes = ["image/jpeg", "image/png", "image/gif"];
+            //         if (validTypes.indexOf(oFile.type) === -1) {
+            //             MessageToast.show("Please upload a valid image file (JPG, PNG, GIF).");
+            //             return;
+            //         }
+            
+            //         // // Validate file size (1MB = 1048576 bytes)
+            //         // if (oFile.size > 1048576) {
+            //         //     MessageToast.show("The file size exceeds the limit of 1MB.");
+            //         //     return;
+            //         // }
+            
+            //         var reader = new FileReader();
+            
+            //         reader.onload = function (e) {
+            //             // Save the uploaded image source as a base64 string
+            //             this._uploadedImageSrc = e.target.result;
+            
+            //             // Hide color picker and color options after an image is selected
+            //             this.byId("idcolorPickerResource").setVisible(false);
+            //             this.byId("colorOptionsResource").setVisible(false);
+            //             MessageToast.show("Image selected. Now press 'Apply' to save!");
+            //         }.bind(this);
+            
+            //         reader.readAsDataURL(oFile);
+            //     } else {
+            //         this.byId("idcolorPickerResource").setVisible(true);
+            //         this.byId("colorOptionsResource").setVisible(true);
+            //         MessageToast.show("No image selected. You can choose other option.");
+            //     }
+            // },                                               
             onColorOptionSelect: function (oEvent) {
                 var oSelectedCheckBox = oEvent.getSource();
                 var oColorOptions = this.byId("colorOptionsResource").getItems();
@@ -736,7 +781,6 @@ sap.ui.define([
                     oColorPicker.setColorString("#FFFFFF");
                     oColorPicker.setVisible(true);
                 }
-
                 // Clear any stored uploaded image source
                 this._uploadedImageSrc = null;
 
@@ -744,6 +788,8 @@ sap.ui.define([
                 if (oImageUploader) {
                     oImageUploader.clear();
                 }
+                this.byId("colorOptionsResource").setVisible(true);
+                this.byId("idBrowseImgfileUploaderTilesBG").setVisible(true);
             },
             _isValidColor: function (sColor) {
                 var hexRegex = /^#([0-9A-Fa-f]{3}){1,2}$/;
@@ -942,21 +988,11 @@ sap.ui.define([
                 }
             },
             onPressProfileImageAvatar: function () {
-                //var oFileUploader = this._oDialog.mAggregations.customHeader.mAggregations.contentRight[0].sId;
-                //var oSaveButton = this._oDialog.mAggregations.customHeader.mAggregations.contentRight[1].sId;
+                debugger
                 var oFileUploader = this.getView().byId("idProfileImageFileUploader");
-                var oSaveButton = this.getView().byId("idSaveBtnUserProfilePicture");
-
-                // Check if both controls exist before proceeding
-                if (!oFileUploader || !oSaveButton) {
-                    console.error("FileUploader or Save button not found. Please check the IDs.");
-                    return;
-                }
-
-                // Toggle visibility based on the current state
-                var bIsVisible = oFileUploader.getVisible();
-                oFileUploader.setVisible(!bIsVisible);
-                oSaveButton.setVisible(!bIsVisible);
+    
+                // Programmatically trigger the file selection dialog
+                // oFileUploader.$().find('input[type="file"]').trigger('click');
             },
             onFileUploadForProfileImage: function (oEvent) {
                 this._oSelectedFile = oEvent.getParameter("files") && oEvent.getParameter("files")[0];

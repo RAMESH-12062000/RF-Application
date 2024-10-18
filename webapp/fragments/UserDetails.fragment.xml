@@ -56,7 +56,7 @@
                 displayShape="Circle"
                 displaySize="XL"
                 class="profileAvatar"
-                press="onPressProfileImageAvatar12345678"
+                press="onPressProfileImageAvatar"
             />
             <VBox
                 id="VBox2UserDetails_ResourcePage"
