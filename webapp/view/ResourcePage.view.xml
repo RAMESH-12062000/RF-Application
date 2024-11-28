@@ -72,6 +72,7 @@
                     <Avatar
                         id="id_GenAvatar1P"
                         displaySize="XS"
+                        src="https://th.bing.com/th/id/OIP.hCfHyL8u8XAbreXuaiTMQgHaHZ?rs=1pid=ImgDetMain"
                         press="onSBQPAvatarPressed"
                         tooltip="Profile"
                     />
@@ -83,7 +84,7 @@
                     horizontal="true"
                     vertical="true"
                     height="100%"
-                    class="sapUiContentPadding"
+                    class="sapUiContentPadding scrollContainer"
                 >
                     <!-- <form:SimpleForm
                     id="idsimpleform"

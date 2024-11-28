@@ -685,70 +685,70 @@ sap.ui.define([
             },
             onPressBackgroundTilesBG: function () {
                 var oFileUploader = this.byId("idBrowseImgfileUploaderTilesBG");
-            
+
                 var bIsVisible = oFileUploader.getVisible();
                 oFileUploader.setVisible(!bIsVisible);  // Toggle visibility
             },
-            onFileUploadChange: function (oEvent) {
-                var aFiles = oEvent.getParameter("files");
-                if (aFiles.length > 0) {
-                    var oFile = aFiles[0];
-                    var reader = new FileReader();
-            
-                    reader.onload = function (e) {
-                        // Save the uploaded image source as base64 string
-                        this._uploadedImageSrc = e.target.result;
-            
-                        // Hide color picker and color options after an image is selected
-                        this.byId("idcolorPickerResource").setVisible(false);
-                        this.byId("colorOptionsResource").setVisible(false);
-                        MessageToast.show("Image selected. Now press 'Apply' to save!");
-                    }.bind(this);
-            
-                    reader.readAsDataURL(oFile);
-                } else {
-                    this.byId("idcolorPickerResource").setVisible(true);
-                    this.byId("colorOptionsResource").setVisible(true);
-                    MessageToast.show("No image selected. Please choose an image.");
-                }
-            }, 
             // onFileUploadChange: function (oEvent) {
             //     var aFiles = oEvent.getParameter("files");
             //     if (aFiles.length > 0) {
             //         var oFile = aFiles[0];
-            
-            //         // Validate file type based on mime type
-            //         var validTypes = ["image/jpeg", "image/png", "image/gif"];
-            //         if (validTypes.indexOf(oFile.type) === -1) {
-            //             MessageToast.show("Please upload a valid image file (JPG, PNG, GIF).");
-            //             return;
-            //         }
-            
-            //         // // Validate file size (1MB = 1048576 bytes)
-            //         // if (oFile.size > 1048576) {
-            //         //     MessageToast.show("The file size exceeds the limit of 1MB.");
-            //         //     return;
-            //         // }
-            
             //         var reader = new FileReader();
-            
+
             //         reader.onload = function (e) {
-            //             // Save the uploaded image source as a base64 string
+            //             // Save the uploaded image source as base64 string
             //             this._uploadedImageSrc = e.target.result;
-            
+
             //             // Hide color picker and color options after an image is selected
             //             this.byId("idcolorPickerResource").setVisible(false);
             //             this.byId("colorOptionsResource").setVisible(false);
             //             MessageToast.show("Image selected. Now press 'Apply' to save!");
             //         }.bind(this);
-            
+
             //         reader.readAsDataURL(oFile);
             //     } else {
             //         this.byId("idcolorPickerResource").setVisible(true);
             //         this.byId("colorOptionsResource").setVisible(true);
-            //         MessageToast.show("No image selected. You can choose other option.");
+            //         MessageToast.show("No image selected. Please choose an image.");
             //     }
-            // },                                               
+            // }, 
+            onFileUploadChange: function (oEvent) {
+                var aFiles = oEvent.getParameter("files");
+                if (aFiles.length > 0) {
+                    var oFile = aFiles[0];
+
+                    // Validate file type based on mime type
+                    var validTypes = ["image/jpeg", "image/png", "image/gif"];
+                    if (validTypes.indexOf(oFile.type) === -1) {
+                        MessageToast.show("Please upload a valid image file (JPG, PNG, GIF).");
+                        return;
+                    }
+
+                    // // Validate file size (1MB = 1048576 bytes)
+                    // if (oFile.size > 1048576) {
+                    //     MessageToast.show("The file size exceeds the limit of 1MB.");
+                    //     return;
+                    // }
+
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        // Save the uploaded image source as a base64 string
+                        this._uploadedImageSrc = e.target.result;
+
+                        // Hide color picker and color options after an image is selected
+                        this.byId("idcolorPickerResource").setVisible(false);
+                        this.byId("colorOptionsResource").setVisible(false);
+                        MessageToast.show("Image selected. Now press 'Apply' to save!");
+                    }.bind(this);
+
+                    reader.readAsDataURL(oFile);
+                } else {
+                    this.byId("idcolorPickerResource").setVisible(true);
+                    this.byId("colorOptionsResource").setVisible(true);
+                    MessageToast.show("No image selected. You can choose other option.");
+                }
+            },
             onColorOptionSelect: function (oEvent) {
                 var oSelectedCheckBox = oEvent.getSource();
                 var oColorOptions = this.byId("colorOptionsResource").getItems();
@@ -987,39 +987,72 @@ sap.ui.define([
                     this._oDialog.close();
                 }
             },
+            //Changing the profile pics...
             onPressProfileImageAvatar: function () {
+                var fileInput = document.createElement("input");
+                fileInput.type = "file";
+                fileInput.accept = "image/*";
+                fileInput.style.display = "none";
+
+                // Add an event listener to handle the file selection
+                fileInput.addEventListener("change", (event) => {
+                    var selectedFile = event.target.files[0];
+                    if (selectedFile) {
+                        var reader = new FileReader();
+                        reader.onload = (e) => {
+                            var selectedImageBase64 = e.target.result; // Get the base64 encoded image
+                            var oImageControl1 = this._oDialog.mAggregations.content[0].mAggregations.items[0];
+                            var oImageControl2 = this._oPopover.mAggregations.content[0]._aElements[0].mAggregations.items[0].mAggregations.items[0];
+                            var oImageControl3 = this.oView.mAggregations.content[0].mAggregations.pages[0].mAggregations.header.mAggregations.content[8];
+                            // Set the src for each image control
+                            oImageControl1.setSrc(selectedImageBase64);
+                            oImageControl2.setSrc(selectedImageBase64);
+                            oImageControl3.setSrc(selectedImageBase64);
+
+                            // Store the image in localStorage
+                            localStorage.setItem("userProfileImage", selectedImageBase64);
+                            sap.m.MessageToast.show("Profile image updated successfully!");
+                        };
+                        reader.readAsDataURL(selectedFile);
+                    }
+                });
+                fileInput.click();
+            },
+            onPressPopoverProfileImageAvatar: function () {
                 debugger
-                var oFileUploader = this.getView().byId("idProfileImageFileUploader");
-    
-                // Programmatically trigger the file selection dialog
-                // oFileUploader.$().find('input[type="file"]').trigger('click');
-            },
-            onFileUploadForProfileImage: function (oEvent) {
-                this._oSelectedFile = oEvent.getParameter("files") && oEvent.getParameter("files")[0];
-                MessageToast.show("Image Selected. now press on Save!")
-            },
-            onPressSaveUserProfileImage: function () {
-                if (this._oSelectedFile) {
-                    var oReader = new FileReader();
-                    var oImageControl1 = this._oDialog.mAggregations.content[0].mAggregations.items[0];
-                    var oImageControl2 = this._oPopover.mAggregations.content[0]._aElements[0].mAggregations.items[0].mAggregations.items[0];
-                    var oImageControl3 = this.oView.mAggregations.content[0].mAggregations.pages[0].mAggregations.header.mAggregations.content[8];
+                var fileInput = document.createElement("input");
+                fileInput.type = "file";
+                fileInput.accept = "image/*";
+                fileInput.style.display = "none";
 
-                    // Set up the onload event for the FileReader
-                    oReader.onload = function (oEvent) {
-                        var sBase64Image = oEvent.target.result;
-                        oImageControl1.setSrc(sBase64Image);
-                        oImageControl2.setSrc(sBase64Image);
-                        oImageControl3.setSrc(sBase64Image);
-                        localStorage.setItem("userProfileImage", sBase64Image);
-                        MessageToast.show("Profile image updated successfully!");
-                    };
+                // Add event listener to handle the file selection
+                fileInput.addEventListener("change", (event) => {
+                    var selectedFile = event.target.files[0];
+                    if (selectedFile) {
+                        var oReader = new FileReader();
+                        // Set up the onload event for FileReader
+                        oReader.onload = (oEvent) => {
+                            var sBase64Image = oEvent.target.result;
+                            var oImageControl1 = this._oDialog.mAggregations.content[0].mAggregations.items[0];
+                            var oImageControl2 = this._oPopover.mAggregations.content[0]._aElements[0].mAggregations.items[0].mAggregations.items[0];
+                            var oImageControl3 = this.oView.mAggregations.content[0].mAggregations.pages[0].mAggregations.header.mAggregations.content[8];
 
-                    // Read the selected file as a Data URL (base64 string)
-                    oReader.readAsDataURL(this._oSelectedFile);
-                } else {
-                    MessageToast.show("Please select an image to upload.");
-                }
+                            // Set the image sources for the controls
+                            oImageControl1.setSrc(sBase64Image);
+                            oImageControl2.setSrc(sBase64Image);
+                            oImageControl3.setSrc(sBase64Image);
+
+                            // Store the image in localStorage
+                            localStorage.setItem("userProfileImage", sBase64Image);
+                            MessageToast.show("Profile image updated successfully!");
+                        };
+                        // Read the selected file as a Data URL (base64 string)
+                        oReader.readAsDataURL(selectedFile);
+                    } else {
+                        MessageToast.show("Please select an image to upload.");
+                    }
+                });
+                fileInput.click();
             },
             //Language Transulation PopOver Profile...
             onPressLanguageTranslation: function (oEvent) {

@@ -9,7 +9,7 @@
         verticalScrolling="false"
         horizontalScrolling="false"
         class="sapUiResponsivePadding"
-        contentWidth="200px"
+        contentWidth="210px"
         title="Profile:"
     >
         <form:SimpleForm
@@ -23,8 +23,11 @@
                 >
                     <Avatar
                         id="idProfileAvatar"
-                        displaySize="XS"
+                        displaySize="S"
                         tooltip="Profile"
+                        class="profileAvatar12345"
+                        src="https://th.bing.com/th/id/OIP.hCfHyL8u8XAbreXuaiTMQgHaHZ?rs=1pid=ImgDetMain"
+                        press="onPressPopoverProfileImageAvatar"
                     />
                     <Label
                         id="idLabelEmptyInProfile"
